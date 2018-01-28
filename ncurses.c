@@ -1,27 +1,30 @@
-#include <ncurses.h>
 #include "cor.h"
-#include <string.h>
-#include <stdlib.h>
+
+
 
 void	draw_field(WINDOW *win, t_cor *cor)
 {
-	int x;
-	int y;
-	int i;
-	int j;
+	unsigned int x;
+	unsigned int y;
+	unsigned int i;
+	unsigned int j;
+	unsigned int k;
 
 	y = 2;
 	j = 0;
-	while (j < 4096)
+	k = 0;
+	while (j < MEM_SIZE)
 	{
 		x = 2;
 		i = 0;
 //		mvwprintw(win, y, x++, "%d ", y);
 		while (i < 64)
 		{
-			if (j < cor->players->prog_size)
+			if (k < cor->count_players && j < cor->players[k].prog_size)
 			{
-				while (j < cor->players->prog_size && i < 64)
+//				if (cor->map[j].cursor == 0)
+					check_color(k, cor->map[j].pn);
+				while (j < cor->players[k].prog_size && i < 64)
 				{
 					attron(COLOR_PAIR(10));
 					mvwprintw(win, y, x++, "%02x", cor->map[j].cell);
@@ -30,6 +33,10 @@ void	draw_field(WINDOW *win, t_cor *cor)
 					i++;
 				}
 				attroff(COLOR_PAIR(10));
+				if (cor->count_players != 0)
+				{
+					cor->count_players--;
+				}
 			}
 			else
 			{
@@ -51,7 +58,7 @@ void	draw_field(WINDOW *win, t_cor *cor)
 void	sidebar(t_cor *cor, WINDOW *win)
 {
 	attron(COLOR_PAIR(3) | A_BOLD);
-	if (cor->pause == 1)
+	if (cor->curses.paused == 1)
 	{
 		attron(COLOR_PAIR(6));
 		mvwprintw(win, 2, 198, "** PAUSED  **");
@@ -63,8 +70,8 @@ void	sidebar(t_cor *cor, WINDOW *win)
 		mvwprintw(win, 2, 198, "** RUNNING **");
 		attroff(COLOR_PAIR(5));
 	}
-	mvwprintw(win, 4, 198, "Cycles/second limit : %d ", cor->speed);
-	mvwprintw(win, 10, 198, "Cycle : %d ", cor->cycle);
+	mvwprintw(win, 4, 198, "Game speed : %d ", cor->speed);
+	mvwprintw(win, 10, 198, "Cycle : %d ", cor->curses.cycle);
 	mvwprintw(win, 12, 198, "Processes : ? ");
 	mvwprintw(win, 14, 198, "Player %d: %.51s ", cor->cursor->player_number, cor->players->prog_name);
 	mvwprintw(win, 15, 200, "Last live : %20c ", '?');
@@ -76,11 +83,11 @@ void	sidebar(t_cor *cor, WINDOW *win)
 	attroff(COLOR_PAIR(3) | A_BOLD);
 }
 
-void	draw_borders(WINDOW *win, t_cor *cor)
+void	draw_borders(WINDOW *win)
 {
-	int x;
-	int y;
-	int i;
+	unsigned int x;
+	unsigned int y;
+	unsigned int i;
 
 	i = 1;
 	y = 68;
@@ -111,9 +118,8 @@ void	draw_borders(WINDOW *win, t_cor *cor)
 		i++;
 	}
 	attroff(COLOR_PAIR(2));
-	sidebar(cor, stdscr);
-	refresh() ;
-	wrefresh(stdscr);
+//	refresh() ;
+//	wrefresh(stdscr);
 }
 
 void	init_colors(void)
@@ -130,14 +136,32 @@ void	init_colors(void)
 	init_pair(6, 160, COLOR_BLACK);
 }
 
+void	navigation(WINDOW *win)
+{
+	attron(COLOR_PAIR(4));
+	mvwprintw(win, 30, 198, "Pause/run: ");
+	mvwprintw(win, 31, 200, "press 'space'");
+	mvwprintw(win, 33, 198, "Increase the number of game speed: ");
+	mvwprintw(win, 34, 200, "press 'w'");
+	mvwprintw(win, 36, 198, "Decrease the number of game speed: ");
+	mvwprintw(win, 37, 200, "press 's'");
+	mvwprintw(win, 39, 198, "Increase the cycle: ");
+	mvwprintw(win, 40, 200, "press 'q'");
+	mvwprintw(win, 42, 198, "Exit: ");
+	mvwprintw(win, 43, 200, "press 'esc'");
+	attroff(COLOR_PAIR(4));
+}
+
 void	check_keys(int ch, t_cor *cor)
 {
 	if (ch == 32)
 	{
-		if (cor->pause == 0)
-			cor->pause = 1;
+		if (cor->curses.paused == 0)
+			cor->curses.paused = 1;
 		else
-			cor->pause = 0;
+		{
+			cor->curses.paused = 0;
+		}
 	}
 	else if (ch == 119)
 		cor->speed = cor->speed + 1;
@@ -147,23 +171,23 @@ void	check_keys(int ch, t_cor *cor)
 		cor->cycle = cor->cycle + 10;
 }
 
-void	navigation(WINDOW *win)
+void	winner_loop(void)
 {
-	attron(COLOR_PAIR(4));
-	mvwprintw(win, 30, 198, "Pause/run: ");
-	mvwprintw(win, 31, 200, "press 'space'");
-	mvwprintw(win, 33, 198, "Increase the number of cycles/second limit: ");
-	mvwprintw(win, 34, 200, "press 'w'");
-	mvwprintw(win, 36, 198, "Decrease the number of cycles/second limit: ");
-	mvwprintw(win, 37, 200, "press 's'");
-	mvwprintw(win, 39, 198, "Increase the cycle: ");
-	mvwprintw(win, 40, 200, "press 'q'");
-	mvwprintw(win, 42, 198, "Exit: ");
-	mvwprintw(win, 43, 200, "press 'esc'");
-	attroff(COLOR_PAIR(4));
+	int quit;
+	int key;
+
+	quit = 'o';
+	while (quit != 'x')
+	{
+		key = getch();
+		if (key == 'x')
+			quit = key;
+	}
+	endwin();
+	exit(1);
 }
 
-void	start_ncurses(t_cor *cor)
+void	init_ncurses(t_cor *cor)
 {
 	int ch;
 
@@ -174,13 +198,19 @@ void	start_ncurses(t_cor *cor)
 	start_color();
 	init_colors();
 	draw_field(stdscr, cor);
-	draw_borders(stdscr, cor);
+	draw_borders(stdscr);
 	navigation(stdscr);
 	while ((ch = getch()) != 27)
 	{
 		check_keys(ch, cor);
 		draw_field(stdscr, cor);
-		draw_borders(stdscr, cor);
+		draw_borders(stdscr);
+		sidebar(cor, stdscr);
+		navigation(stdscr);
+//		check_keys(ch, cor);
+		init_great_war(cor);
+		refresh();
+		wrefresh(stdscr);
 	}
 	endwin(); /* End curses mode */
 }

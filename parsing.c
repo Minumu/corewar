@@ -16,6 +16,8 @@ static void    isset_cor_files(t_cor *cor)
         lseek(fd, 0, SEEK_SET);
         cor->players[i].fd = fd;
         cor->players[i].full_prog_size = (size_t) size;
+        cor->players[i].nb = -(i + 1);
+        cor->players[i].nb_set = -(i + 1);
         i++;
     }
 }
@@ -44,6 +46,7 @@ static void fill_and_check_player(t_cor *cor, int nb)
     check_size(cor, nb);
     skip_bytes = parse_prog_comment(cor, nb, content, skip_bytes) + 4 + skip_bytes;
     parse_program(cor, nb, content, skip_bytes);
+    free(content);
 }
 
 static void parse_cor_files(t_cor *cor)
@@ -68,10 +71,17 @@ void parse_arg(char **av, t_cor *cor)
     {
         if (ft_strequ("-n",av[i]))
             cor->n = 1;
-        else if (ft_strstr_my(av[i], ".cor", 0))
+        else if (ft_strequ("-d",av[i]))
+        {
+            cor->d = 1;
+            cor->dump_number = (int) ft_atoi(av[i + 1]);
+        }
+//        if (ft_strequ("-p", av[i]))
+//        {
+//            check_set_nb
+//        }
+        if (ft_strstr_my(av[i], ".cor", 0))
             add_players(av[i], cor);
-        else if (i > 0)
-            ft_put_error("Bad arguments\n");
         i++;
     }
     isset_cor_files(cor);

@@ -35,8 +35,9 @@ void    fill_arena_program(t_cor *cor)
     while (i < cor->count_players)
     {
         j = 0;
-        while (j < cor->players[i].prog_size)
+        while (j < (int)cor->players[i].prog_size)
         {
+            cor->map[j + cor->players[i].start_pos].pn = -cor->players[i].nb;
             cor->map[j + cor->players[i].start_pos].cell =
                     (unsigned char) cor->players[i].program[j];
             j++;
@@ -50,11 +51,11 @@ void    init_arena(t_cor *cor)
 {
     init_start_pos(cor);
     cor->cycle = 0;
-    cor->ctd = CYCLE_TO_DIE;
-    cor->nbr_live = NBR_LIVE;
+    cor->curses.time_to_die = CYCLE_TO_DIE;
+    cor->nbr_live = 0;
     cor->speed = 100;
-    cor->max_checks = MAX_CHECKS;
-    cor->delta = CYCLE_DELTA;
+    cor->max_checks = 0;
+    cor->delta = 0;
     cor->cursor_cnt = 1;
     cor->winner = 0;
     fill_arena_zero(cor);

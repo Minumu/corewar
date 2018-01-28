@@ -19,7 +19,7 @@ void   parse_program(t_cor *cor, int nb, char *content, int move)
 
     i = 0;
     cor->players[nb].program = ft_strnew(cor->players[nb].prog_size) + 1;
-    while (i < cor->players[nb].prog_size)
+    while (i < (int)cor->players[nb].prog_size)
     {
         cor->players[nb].program[i] = content[i + move];
         i++;

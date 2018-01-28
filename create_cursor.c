@@ -11,17 +11,16 @@ t_cursor    *create_cursor(int nb, t_cor *cor)
     cursor->set_number = -(nb + 1);
     cursor->binary = NULL;
     cursor->carry = 0;
-    cursor->direct = 0;
-    cursor->indirect = 0;
-    cursor->label = 0;
     cursor->live = 0;
-    cursor->registr = 0;
     cursor->reg[1] = -(nb + 1);
     while (++r < 17)
         cursor->reg[r] = 0;
     cursor->next = NULL;
     cursor->op.cycles = 1;
     cursor->op.opcode = 0;
+    cursor->skip_bytes_cursor = 0;
+    cursor->opcode_g = -1;
+    cursor->valid = 0;
     cursor->index = cor->players[nb].start_pos;
     return (cursor);
 }
