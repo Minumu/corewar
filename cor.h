@@ -15,6 +15,7 @@
 /*TEST*/
  typedef struct		s_curses
 {
+	 WINDOW			*win;
 	int				nbr_live;
 	int				time_to_die;
 	int				cycle_to_die;
@@ -134,8 +135,8 @@ void    lfork(t_cursor *cursor, t_cor *cor);
 //void	init_colors(void);
 //void	nc_prepare(t_cor *data, t_curses *curses);
 
-
-void	pause_game(WINDOW *win, t_cor *cor);
+void	end_game(t_cor *cor);
+void	pause_game(t_cor *cor);
 void	winner_loop();
 void	init_ncurses(t_cor *cor);
 void    corewar(t_cor *cor);

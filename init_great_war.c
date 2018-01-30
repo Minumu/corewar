@@ -250,17 +250,7 @@ int		count_processes(t_cor *data)
 
 void    print_winner(t_cor *cor)
 {
-    if (cor->n == 1)
-       winner_loop();
-    else
-    {
-        ft_printf("Congratulations!!!\n");
-        ft_printf("Player: ");
-        ft_printf("%d", cor->players[cor->winner].nb);
-        ft_printf(" (%s)", cor->players[cor->winner].prog_name);
-        ft_printf(" won\n");
-        exit(0);
-    }
+    end_game(cor);
 }
 
 void    exit_game(t_cor *cor)
