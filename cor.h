@@ -134,6 +134,8 @@ void    lfork(t_cursor *cursor, t_cor *cor);
 //void	init_colors(void);
 //void	nc_prepare(t_cor *data, t_curses *curses);
 
+
+void	pause_game(WINDOW *win, t_cor *cor);
 void	winner_loop();
 void	init_ncurses(t_cor *cor);
 void    corewar(t_cor *cor);

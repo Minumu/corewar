@@ -1,6 +1,32 @@
 #include "cor.h"
 
+void	check_cursor_color(int pn, WINDOW *win)
+{
+	if (pn == 0)
+		wattron(win, COLOR_PAIR(15));
+	else if (pn == 1)
+		wattron(win, COLOR_PAIR(11));
+	else if (pn == 2)
+		wattron(win, COLOR_PAIR(12));
+	else if (pn == 3)
+		wattron(win, COLOR_PAIR(13));
+	else if (pn == 4)
+		wattron(win, COLOR_PAIR(14));
+}
 
+void	check_player_color(int pn, WINDOW *win)
+{
+	if (pn == 0)
+		wattron(win, COLOR_PAIR(1));
+	else if (pn == 1)
+		wattron(win, COLOR_PAIR(10));
+	else if (pn == 2)
+		wattron(win, COLOR_PAIR(20));
+	else if (pn == 3)
+		wattron(win, COLOR_PAIR(30));
+	else if (pn == 4)
+		wattron(win, COLOR_PAIR(40));
+}
 
 void	draw_field(WINDOW *win, t_cor *cor)
 {
@@ -8,51 +34,39 @@ void	draw_field(WINDOW *win, t_cor *cor)
 	unsigned int y;
 	unsigned int i;
 	unsigned int j;
-	unsigned int k;
 
 	y = 2;
 	j = 0;
-	k = 0;
 	while (j < MEM_SIZE)
 	{
 		x = 2;
 		i = 0;
-//		mvwprintw(win, y, x++, "%d ", y);
 		while (i < 64)
 		{
-			if (k < cor->count_players && j < cor->players[k].prog_size)
-			{
-//				if (cor->map[j].cursor == 0)
-					check_color(k, cor->map[j].pn);
-				while (j < cor->players[k].prog_size && i < 64)
-				{
-					attron(COLOR_PAIR(10));
-					mvwprintw(win, y, x++, "%02x", cor->map[j].cell);
-					x += 2;
-					j++;
-					i++;
-				}
-				attroff(COLOR_PAIR(10));
-				if (cor->count_players != 0)
-				{
-					cor->count_players--;
-				}
-			}
-			else
-			{
-				attron(COLOR_PAIR(1) | A_BOLD);
+//			if (j < cor->players[k].prog_size)
+//			{
+				if (cor->map[j].cursor == 1)
+					check_cursor_color(cor->map[j].pn, win);
+				else
+					check_player_color(cor->map[j].pn, win);
 				mvwprintw(win, y, x++, "%02x", cor->map[j].cell);
+//				while (j < cor->players[k].prog_size && i < 64)
+//				{
+//					attron(COLOR_PAIR(10));
+//					mvwprintw(win, y, x++, "%02x", cor->map[j].cell);
 				x += 2;
-				i++;
 				j++;
-			}
-			attroff(COLOR_PAIR(1) | A_BOLD);
+				i++;
+//				}
+				attron(COLOR_PAIR(1));
+//			}
+//			 attroff(COLOR_PAIR(1) | A_BOLD);
 //			mvwprintw(win, y, x++, "%d ", i);
 //			x++;
 		}
 		y++;
-	}
 //	wrefresh(stdscr);
+	}
 }
 
 void	sidebar(t_cor *cor, WINDOW *win)
@@ -124,11 +138,16 @@ void	draw_borders(WINDOW *win)
 
 void	init_colors(void)
 {
+	init_pair(1, 8, COLOR_BLACK);
 	init_pair(10, COLOR_GREEN, COLOR_BLACK);
 	init_pair(20, COLOR_BLUE, COLOR_BLACK);
 	init_pair(30, COLOR_RED, COLOR_BLACK);
 	init_pair(40, COLOR_CYAN, COLOR_BLACK);
-	init_pair(1, 8, COLOR_BLACK);
+	init_pair(11, COLOR_BLACK, COLOR_GREEN);
+	init_pair(12, COLOR_BLACK, COLOR_BLUE);
+	init_pair(13, COLOR_BLACK, COLOR_RED);
+	init_pair(14, COLOR_BLACK, COLOR_CYAN);
+	init_pair(15, COLOR_BLACK, 8);
 	init_pair(2, 8, 8);
 	init_pair(3, COLOR_WHITE, COLOR_BLACK);
 	init_pair(4, 167, COLOR_BLACK);
@@ -154,16 +173,7 @@ void	navigation(WINDOW *win)
 
 void	check_keys(int ch, t_cor *cor)
 {
-	if (ch == 32)
-	{
-		if (cor->curses.paused == 0)
-			cor->curses.paused = 1;
-		else
-		{
-			cor->curses.paused = 0;
-		}
-	}
-	else if (ch == 119)
+	if (ch == 119)
 		cor->speed = cor->speed + 1;
 	else if (ch == 115 && cor->speed > 0)
 		cor->speed = cor->speed - 1;
@@ -173,24 +183,62 @@ void	check_keys(int ch, t_cor *cor)
 
 void	winner_loop(void)
 {
-	int quit;
-	int key;
-
-	quit = 'o';
-	while (quit != 'x')
+	while (getch() != 27)
 	{
-		key = getch();
-		if (key == 'x')
-			quit = key;
+		;
 	}
 	endwin();
 	exit(1);
 }
 
-void	init_ncurses(t_cor *cor)
+void	start_game(WINDOW *win, t_cor *cor)
 {
 	int ch;
 
+	while ((ch = getch()) != 27)
+	{
+		if (ch == 32)
+			pause_game(win, cor);
+		check_keys(ch, cor);
+		init_great_war(cor);
+		draw_field(stdscr, cor);
+		draw_borders(stdscr);
+		navigation(stdscr);
+		refresh();
+		wrefresh(stdscr);
+	}
+	endwin();
+	exit(1);
+}
+
+void	pause_game(WINDOW *win, t_cor *cor)
+{
+	int ch;
+
+	while ((ch = getch()) != 27)
+	{
+		if (ch == 32)
+		{
+			cor->curses.paused = 0;
+			refresh();
+			wrefresh(stdscr);
+			start_game(win, cor);
+		}
+		else
+			continue ;
+	}
+//	else
+//	{
+//		check_keys(ch, cor);
+//		pause_game(win, cor);
+//	}
+//	pause_game(win,cor);
+//	endwin();
+//	exit(1);
+}
+
+void	init_ncurses(t_cor *cor)
+{
 	initscr();
 	cbreak();
 	noecho();
@@ -200,17 +248,21 @@ void	init_ncurses(t_cor *cor)
 	draw_field(stdscr, cor);
 	draw_borders(stdscr);
 	navigation(stdscr);
-	while ((ch = getch()) != 27)
-	{
-		check_keys(ch, cor);
-		draw_field(stdscr, cor);
-		draw_borders(stdscr);
-		sidebar(cor, stdscr);
-		navigation(stdscr);
+	refresh();
+	wrefresh(stdscr);
+	pause_game(stdscr, cor);
+//	while ((ch = getch()) != 27)
+//	{
 //		check_keys(ch, cor);
-		init_great_war(cor);
-		refresh();
-		wrefresh(stdscr);
-	}
-	endwin(); /* End curses mode */
+//		draw_field(stdscr, cor);
+//		draw_borders(stdscr);
+//		sidebar(cor, stdscr);
+//		navigation(stdscr);
+//		check_keys(ch, cor);
+//		init_great_war(cor);
+//		refresh();
+//		wrefresh(stdscr);
+//	}
+	endwin();
+	exit(1);/* End curses mode */
 }
