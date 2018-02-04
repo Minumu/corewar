@@ -43,12 +43,12 @@ void		sidebar(t_cor *cor)
 	}
 	mvwprintw(cor->curses.win, 4, 198, "Game speed : %d ", cor->spd);
 	mvwprintw(cor->curses.win, 10, 198, "Cycle : %d ", cor->curses.cycle);
-	mvwprintw(cor->curses.win, 12, 198, "Processes : ", cor->curses.proc);
+	mvwprintw(cor->curses.win, 12, 198, "Processes : %d ", cor->curses.proc);
 	print_player(cor);
 	mvwprintw(cor->curses.win, 27, 198, "CYCLE TO DIE : %d ",
 			cor->curses.cycle_to_die);
 	mvwprintw(cor->curses.win, 29, 198, "CYCLE DELTA : %d ", CYCLE_DELTA);
-	mvwprintw(cor->curses.win, 31, 198, "NBR LIVE : %d ", cor->curses.nbr_live);
+	mvwprintw(cor->curses.win, 31, 198, "NBR LIVE : %d ", NBR_LIVE);
 	attroff(COLOR_PAIR(3) | A_BOLD);
 	navigation(cor);
 }

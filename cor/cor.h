@@ -189,5 +189,6 @@ void				check_player_color(int pn, t_cor *cor);
 void				check_cursor_color(int pn, t_cor *cor);
 void				pause_game(t_cor *cor);
 void				end_game(t_cor *cor);
+void				print_winner(t_cor *cor);
 
 #endif

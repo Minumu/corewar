@@ -49,7 +49,7 @@ void	init_great_war(t_cor *cor, t_cursor *curr_curs)
 		cursor_kaput(cor, cor->cursor, 0);
 		decrease_cycles(cor);
 		if (!count_cursors(cor, cor->lev))
-			end_game(cor);
+			print_winner(cor);
 	}
 	cor->curses.cycle += cor->ada;
 	cor->curses.to_die -= cor->ada;

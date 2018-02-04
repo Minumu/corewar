@@ -1,19 +1,30 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   clean_trash.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tshevchu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/02/04 14:55:54 by tshevchu          #+#    #+#             */
+/*   Updated: 2018/02/04 14:55:56 by tshevchu         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../asm.h"
 
-char *remove_comments(char *str)
+char	*remove_comments(char *str)
 {
-    int i;
+	int i;
 
-    i = 0;
-    while (str[i])
-    {
-        if (str[i] == COMMENT_CHAR)
-        {
-            str[i] = '\0';
-            break;
-        }
-        i++;
-    }
-    return (str);
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == COMMENT_CHAR)
+		{
+			str[i] = '\0';
+			break ;
+		}
+		i++;
+	}
+	return (str);
 }
-
