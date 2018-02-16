@@ -6,7 +6,7 @@
 /*   By: tshevchu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/03 18:46:54 by tshevchu          #+#    #+#             */
-/*   Updated: 2018/02/03 18:47:05 by tshevchu         ###   ########.fr       */
+/*   Updated: 2018/02/05 17:03:54 by afomenko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int		ft_fork(t_cursor *cursor, t_cor *cor)
 	i = (cursor->cci - cursor->sbk) + (cursor->op.args[cor->lev] % IDX_MOD);
 	if (i > MEM_SIZE)
 		i = i % MEM_SIZE;
-	cor->players[cursor->pln - cor->ada].carr_count++;
+	cor->players[cursor->pln_c - cor->ada].carr_count++;
 	new_carr = (t_cursor *)malloc(sizeof(t_cursor));
 	cor->cursor_cnt++;
 	new_carr->pln = cursor->pln;
@@ -51,7 +51,7 @@ int		lfork(t_cursor *cursor, t_cor *cor, int i, int r)
 		i = MEM_SIZE + (i % MEM_SIZE);
 	if (i > MEM_SIZE)
 		i = i % MEM_SIZE;
-	cor->players[cursor->pln - cor->ada].carr_count++;
+	cor->players[cursor->pln_c - cor->ada].carr_count++;
 	new_carr = (t_cursor *)malloc(sizeof(t_cursor));
 	cor->cursor_cnt++;
 	new_carr->pln = cursor->pln;

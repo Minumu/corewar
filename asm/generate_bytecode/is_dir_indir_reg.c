@@ -6,7 +6,7 @@
 /*   By: tshevchu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/04 14:32:37 by tshevchu          #+#    #+#             */
-/*   Updated: 2018/02/04 14:32:39 by tshevchu         ###   ########.fr       */
+/*   Updated: 2018/02/05 00:41:42 by afomenko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,11 @@
 
 int		is_register(char *str)
 {
+	int reg;
+
+	reg = ft_atoi(str + 1);
+	if (reg > 16)
+		return (0);
 	if (str == NULL)
 		return (0);
 	if (str[0] == REG_CHAR)

@@ -6,14 +6,14 @@
 /*   By: tshevchu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/03 17:29:12 by tshevchu          #+#    #+#             */
-/*   Updated: 2018/02/03 17:30:26 by tshevchu         ###   ########.fr       */
+/*   Updated: 2018/02/05 16:29:38 by afomenko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef COR_H
 # define COR_H
 
-# include "../libft/include/libft.h"
+# include "../libft/libft.h"
 # include "op.h"
 # include <ncurses.h>
 # include <fcntl.h>
@@ -44,6 +44,7 @@ typedef struct		s_cursor
 	int				opcode_g;
 	struct s_cursor	*next;
 	int				set_nb;
+	int				pln_c;
 }					t_cursor;
 
 typedef struct		s_arena

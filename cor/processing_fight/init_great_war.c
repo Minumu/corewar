@@ -6,7 +6,7 @@
 /*   By: tshevchu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/03 18:16:05 by tshevchu          #+#    #+#             */
-/*   Updated: 2018/02/03 18:16:08 by tshevchu         ###   ########.fr       */
+/*   Updated: 2018/02/05 15:29:14 by afomenko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,19 @@
 void	corewar(t_cor *cor)
 {
 	int end;
+	int i;
 
 	end = 1;
+	i = 0;
+	ft_printf("Introducing contestants: \n\n");
+	while (i < cor->count_players)
+	{
+		ft_printf("Player %d :  \"%s\" weighting %d bytes  (\"%s\")\n",
+				i + 1, cor->players[i].prog_name, cor->players[i].prog_size,
+				cor->players[i].comment);
+		i++;
+	}
+	ft_printf("\n.\n.\n.\n\n");
 	if (cor->d == 1 && cor->dump_number != cor->lev)
 		dump_corewar(cor);
 	else if (cor->d == 1 && cor->dump_number == cor->lev)
@@ -43,6 +54,7 @@ void	init_great_war(t_cor *cor, t_cursor *curr_curs)
 		while (cor->cursor && !cor->cursor->live)
 		{
 			temp = cor->cursor;
+			cor->map[cor->cursor->cci].cursor = 0;
 			cor->cursor = cor->cursor->next;
 			free(temp);
 		}

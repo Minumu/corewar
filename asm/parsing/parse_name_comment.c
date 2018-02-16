@@ -6,7 +6,7 @@
 /*   By: tshevchu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/04 14:52:56 by tshevchu          #+#    #+#             */
-/*   Updated: 2018/02/04 14:52:59 by tshevchu         ###   ########.fr       */
+/*   Updated: 2018/02/05 00:09:07 by afomenko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,7 @@ static void		write_name_comment(t_asm *asem, char *str_new)
 void			find_name_comment(char *line, t_asm *asem, char **str_new)
 {
 	if (ft_strposlen(line, '"') == 2 && !asem->k)
-	{
 		write_name_comment(asem, check_name_comment(line, 3, 0, 0));
-		free(*str_new);
-	}
 	else if (ft_strposlen(line, '"') == 1 && !asem->k)
 	{
 		*str_new = check_name_comment(line, 1, 0, 0);
@@ -42,13 +39,13 @@ void			find_name_comment(char *line, t_asm *asem, char **str_new)
 	}
 	else if (asem->k == 1 && ft_strposlen(line, '"') == 0)
 	{
-		*str_new = ft_joinfree(*str_new, line, FIRST);
-		*str_new = ft_joinfree(*str_new, "\n", FIRST);
+		*str_new = ft_strjfree(*str_new, line, FIRST);
+		*str_new = ft_strjfree(*str_new, "\n", FIRST);
 	}
 	else if (ft_strposlen(line, '"') == 1 && asem->k == 1)
 	{
-		*str_new = ft_joinfree(*str_new, "\n", FIRST);
-		*str_new = ft_joinfree(*str_new,
+		*str_new = ft_strjfree(*str_new, "\n", FIRST);
+		*str_new = ft_strjfree(*str_new,
 				check_name_comment(line, 2, 0, 0), BOTH);
 		write_name_comment(asem, *str_new);
 	}

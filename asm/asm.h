@@ -6,13 +6,13 @@
 /*   By: tshevchu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/04 14:11:26 by tshevchu          #+#    #+#             */
-/*   Updated: 2018/02/04 14:11:55 by tshevchu         ###   ########.fr       */
+/*   Updated: 2018/02/04 23:38:34 by afomenko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef ASM_H
 # define ASM_H
-# include "../libft/include/libft.h"
+# include "../libft/libft.h"
 # include "op.h"
 
 typedef struct		s_commands
@@ -101,5 +101,8 @@ int					check_line(char *line);
 int					check_command(char *word);
 void				add_to_struct(t_asm *asem, t_commands *op);
 int					check_arg(int n, int type);
+int					ifspaces(const char *str);
+void				check_name_comment_min(char **s,
+		char *tmp2, char *str, int check);
 
 #endif

@@ -6,13 +6,13 @@
 /*   By: tshevchu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/04 19:01:55 by tshevchu          #+#    #+#             */
-/*   Updated: 2018/02/04 19:01:57 by tshevchu         ###   ########.fr       */
+/*   Updated: 2018/02/04 23:38:09 by afomenko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../asm.h"
 
-static int	ifspaces(const char *str)
+int			ifspaces(const char *str)
 {
 	int i;
 
@@ -68,15 +68,7 @@ char		*check_name_comment(char *str, int param, char *tmp, char *tmp2)
 		tmp = ret_name_com(s[1]);
 	else if (param == 2)
 	{
-		if (check > 2)
-			ft_put_error("Wrong syntax in Name or Comment | 1");
-		else if (check == 2)
-		{
-			if (ft_strlen((tmp2 = ft_strtrim(s[1]))) > 1 && tmp2[0] != ';')
-				ft_put_error("Wrong syntax in Name or Comment | 2");
-		}
-		else if (check == 1 && str[0] == '"' && !ifspaces(s[0]))
-			ft_put_error("Wrong syntax in Name or Comment | 3");
+		check_name_comment_min(s, tmp2, str, check);
 		tmp = ret_name_com(s[0]);
 	}
 	else if (param == 3)

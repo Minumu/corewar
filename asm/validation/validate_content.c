@@ -6,7 +6,7 @@
 /*   By: tshevchu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/04 15:37:29 by tshevchu          #+#    #+#             */
-/*   Updated: 2018/02/04 15:37:31 by tshevchu         ###   ########.fr       */
+/*   Updated: 2018/02/05 00:26:01 by afomenko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ void	validate_content(t_asm *asem)
 	int i;
 
 	i = 0;
+	if (asem->comment == NULL && asem->commands == NULL)
+		ft_put_error("Syntax Error in comment");
 	while (asem->commands[i])
 	{
 		validate_all_content(asem, i);

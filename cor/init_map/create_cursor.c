@@ -6,7 +6,7 @@
 /*   By: tshevchu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/03 17:49:35 by tshevchu          #+#    #+#             */
-/*   Updated: 2018/02/03 17:49:39 by tshevchu         ###   ########.fr       */
+/*   Updated: 2018/02/05 16:30:07 by afomenko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ t_cursor	*create_cursor(int nb, t_cor *cor)
 		cursor->pln = cor->players[nb].nb_set;
 	else
 		cursor->pln = -(nb + 1);
+	cursor->pln_c = -(nb + 1);
 	cursor->bnr_code = NULL;
 	cursor->carry = 0;
 	cursor->live = 0;

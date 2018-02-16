@@ -49,5 +49,5 @@ int		get_coding_byte(t_commands *commands)
 		k += 2;
 		i++;
 	}
-	return (ft_atoi_base(binary, 2));
+	return (ft_atoi_base_my(binary, 2));
 }

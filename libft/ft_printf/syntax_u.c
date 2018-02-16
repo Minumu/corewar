@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/ft_printf.h"
+#include "ft_printf.h"
 
 int		flags_wt_single_u(t_struct *record, uintmax_t n, int prec)
 {

@@ -27,6 +27,8 @@ void	error_name(char **av, int count_arg)
 void	error_usage(void)
 {
 	ft_printf("Usage: ./asm <sourcefile.s>\n");
+	ft_printf("Bonuses :\n");
+	ft_printf("-a for detailed print\n");
 	exit(0);
 }
 

@@ -6,7 +6,7 @@
 /*   By: tshevchu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/04 14:20:27 by tshevchu          #+#    #+#             */
-/*   Updated: 2018/02/04 14:20:37 by tshevchu         ###   ########.fr       */
+/*   Updated: 2018/02/04 21:41:08 by afomenko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,6 @@ void	generate_bytecode(t_asm *asem)
 {
 	int fd;
 
-	remove(asem->file);
 	fd = open(asem->file, O_CREAT | O_WRONLY, 0666);
 	if (fd < 0)
 		ft_put_error("OOOPS, something went wrong");

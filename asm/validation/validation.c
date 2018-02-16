@@ -6,7 +6,7 @@
 /*   By: tshevchu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/04 15:41:48 by tshevchu          #+#    #+#             */
-/*   Updated: 2018/02/04 15:41:51 by tshevchu         ###   ########.fr       */
+/*   Updated: 2018/02/05 01:19:34 by afomenko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ int			check_line(char *line)
 	i = 0;
 	while (line[i])
 	{
-		if (ft_isalpha(line[i]))
+		if (ft_isalpha(line[i]) || ft_isdigit(line[i]))
 			return (1);
 		i++;
 	}
